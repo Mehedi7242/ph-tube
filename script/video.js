@@ -23,16 +23,30 @@ const loadVideos = () =>{
 
 };
 
+
+
+
 // load category list 
 const loadCategoryVideo = (id) =>{
     // alert(id)
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
         .then((res) =>res.json())
-        .then((data)=>displayVideos(data.category))
+        .then((data)=>{
+            removeActiveClass();
+            const activeBtn = document.getElementById(`btn-${id}`);
+            activeBtn.classList.add('active')
+            displayVideos(data.category)
+        })
         .catch((error) => console.error(error));
 }
 
-
+const removeActiveClass = ()=>{
+    const buttons =  document.getElementsByClassName('btn-category');
+    console.log(buttons);
+    for (let btn of buttons){
+        btn.classList.remove('active')
+    }
+}
 // {category_id: '1001', category: 'Music'}
 
 //create display categories
@@ -44,7 +58,7 @@ const displayCategories = (categories) =>{
         const buttonContainer = document.createElement('div');
         buttonContainer.innerHTML=
         `
-            <button onclick='loadCategoryVideo(${item.category_id})' class='btn' >
+            <button id=btn-${item.category_id} onclick='loadCategoryVideo(${item.category_id})' class='btn btn-category' >
                 ${item.category}
             </button>
         `;
@@ -55,9 +69,7 @@ const displayCategories = (categories) =>{
         
     });
 
-
 }
-
 
 
 
@@ -87,6 +99,10 @@ const cardDemo = {
         "posted_date": "16278"
     },
     "description": "Dive into the rhythm of 'Shape of You,' a captivating track that blends pop sensibilities with vibrant beats. Created by Olivia Mitchell, this song has already gained 100K views since its release. With its infectious melody and heartfelt lyrics, 'Shape of You' is perfect for fans looking for an uplifting musical experience. Let the music take over as Olivia's vocal prowess and unique style create a memorable listening journey."
+}
+
+const laodDetails = (videoId) =>{
+    console.log(videoId);
 }
 
 
@@ -122,7 +138,7 @@ const displayVideos = (videos) =>{
             </span>`}
             
         </figure>
-        <div class="px-0 py-2 flex gap-4">
+        <div class='px-0 py-2 flex gap-4'>
             <div>
                 <img class="w-10 h-10 rounded-full object-cover" src=${video.authors[0].profile_picture}/>
             </div>
@@ -137,6 +153,7 @@ const displayVideos = (videos) =>{
                 </div>
 
                 <h2 class ="text-gray-400">${video.others.views}</h2>
+                <button class="btn" onclick="laodDetails(${video.video_id})">Details</button>
             </div>
         </div>`
         videoContainer.append(card)
