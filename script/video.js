@@ -1,0 +1,1 @@
+//1 - Fetch, load, and show categories on html
