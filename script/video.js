@@ -23,6 +23,15 @@ const loadVideos = () =>{
 
 };
 
+// load category list 
+const loadCategoryVideo = (id) =>{
+    // alert(id)
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+        .then((res) =>res.json())
+        .then((data)=>displayVideos(data.category))
+        .catch((error) => console.error(error));
+}
+
 
 // {category_id: '1001', category: 'Music'}
 
@@ -32,14 +41,26 @@ const displayCategories = (categories) =>{
 
     categories.forEach(item => {
         // console.log(item)
-        const button = document.createElement('button');
-        button.classList = 'btn';
-        button.innerText = item.category; 
-        categoryContainer.append(button)
+        const buttonContainer = document.createElement('div');
+        buttonContainer.innerHTML=
+        `
+            <button onclick='loadCategoryVideo(${item.category_id})' class='btn' >
+                ${item.category}
+            </button>
+        `;
+
+        // button.classList = 'btn';
+        // button.innerText = item.category; 
+        categoryContainer.append(buttonContainer)
+        
     });
 
 
 }
+
+
+
+
 // get time string 
 const converter = (time)=>{
     const hour = parseInt( time/(3600));
@@ -71,6 +92,7 @@ const cardDemo = {
 
 const displayVideos = (videos) =>{
     const videoContainer = document.getElementById("videos");
+    videoContainer.innerHTML =''
     console.log(videos)
     videos.forEach(video => {
         // console.log(video);
