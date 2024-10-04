@@ -91,8 +91,22 @@ const cardDemo = {
 
 
 const displayVideos = (videos) =>{
+
     const videoContainer = document.getElementById("videos");
-    videoContainer.innerHTML =''
+    videoContainer.innerHTML =""
+
+
+    if (videos.length == 0){
+        videoContainer.classList.remove('grid')
+        videoContainer.innerHTML = `
+        <div class ="min-h-[300px] flex flex-col gap-5 items-center">
+            <img src="./Icon.png">
+            <p class="text-2xl font-bold">Oops!! Sorry, There is no content here</p>
+        </div>
+    `;
+        return
+    }
+
     console.log(videos)
     videos.forEach(video => {
         // console.log(video);
